@@ -1,0 +1,188 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Scanner;
+
+class BasketballItem {
+    private String name;
+    private String description;
+    private int cost;
+    private double rating;
+
+    public BasketballItem(String name, String description, int cost, double rating) {
+        this.name = name;
+        this.description = description;
+        this.cost = cost;
+        this.rating = rating;
+    }
+
+    // Getters and setters for private properties
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public String getDescriptionFormatted() {
+        return "Name: " + name + "\nDescription: " + description + "\nCost: " + cost + "\nRating: " + rating;
+    }
+
+    public String getNameDescription() {
+        return name + " - " + description;
+    }
+}
+
+class BasketballItemCollection {
+    private ArrayList<BasketballItem> items;
+
+    public BasketballItemCollection() {
+        items = new ArrayList<>();
+    }
+
+    public void add(BasketballItem item) {
+        items.add(item);
+    }
+
+    public void remove(int index) {
+        if (index >= 0 && index < items.size()) {
+            items.remove(index);
+        }
+    }
+
+    public void printOne(int index) {
+        if (index >= 0 && index < items.size()) {
+            System.out.println(items.get(index).getDescriptionFormatted());
+        } else {
+            System.out.println("Invalid index.");
+        }
+    }
+
+    public void printAll() {
+        for (int i = 0; i < items.size(); i++) {
+            System.out.println("Item " + (i + 1) + ":");
+            printOne(i);
+            System.out.println();
+        }
+    }
+
+    public void printList() {
+        for (int i = 0; i < items.size(); i++) {
+            System.out.println((i + 1) + ". " + items.get(i).getNameDescription());
+        }
+    }
+
+    public void sort(Comparator<BasketballItem> comparator) {
+        items.sort(comparator);
+    }
+
+    public void search(String phrase) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getNameDescription().toLowerCase().contains(phrase.toLowerCase())) {
+                System.out.println("Item found at index " + i + ":");
+                System.out.println(items.get(i).getDescriptionFormatted() + "\n");
+            }
+        }
+    }
+
+    public void searchByCost(int cost) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getCost() == cost) {
+                System.out.println("Item found at index " + i + ":");
+                System.out.println(items.get(i).getDescriptionFormatted() + "\n");
+            }
+        }
+    }
+}
+
+public class Basket {
+    public static void main(String[] args) {
+        BasketballItemCollection collection = new BasketballItemCollection();
+        Scanner Keyboard = new Scanner(System.in);
+
+        System.out.println("Welcome to the basketball hobby object manager!");
+        int choice;
+        do {
+            System.out.println("Choose an option to proceed:");
+            System.out.println("1 - Print item list");
+            System.out.println("2 - Add a new item");
+            System.out.println("3 - Remove an item");
+            System.out.println("4 - Sort items");
+            System.out.println("5 - Search items");
+            System.out.println("0 - Exit the program");
+
+            choice = Keyboard.nextInt();
+            Keyboard.nextLine(); // Consume the newline character
+
+            switch (choice) {
+                case 1:
+                    collection.printList();
+                    break;
+                case 2:
+                    inputItem(collection, Keyboard);
+                    break;
+                case 3:
+                    removeItem(collection, Keyboard);
+                    break;
+                case 4:
+                    sortItems(collection, Keyboard);
+                    break;
+                case 5:
+                    searchItems(collection, Keyboard);
+                    break;
+                case 0:
+                    System.out.println("Exiting the program. Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please choose a valid option.");
+            }
+        } while (choice != 0);
+
+        Keyboard.close();
+    }
+
+    public static void inputItem(BasketballItemCollection collection, Scanner Keyboard) {
+        System.out.println("Adding a new basketball item:");
+
+        System.out.print("Enter the item's name: ");
+        String name = Keyboard.nextLine();
+
+        System.out.print("Enter the item's description: ");
+        String description = Keyboard.nextLine();
+
+        System.out.print("Enter the item's cost: ");
+        int cost = Keyboard.nextInt();
+        Keyboard.nextLine();
+
+        System.out.print("Enter the item's rating like 1-5 how its important: ");
+        double rating = Keyboard.nextDouble();
+        Keyboard.nextLine();
+
+        BasketballItem item = new BasketballItem(name, description, cost, rating);
+        collection.add(item);
+    }
+
+    public static void removeItem(BasketballItemCollection collection, Scanner scanner) {
+        System.out.print("Enter the index of the item to remove: ");
+        int index = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+        collection.remove(index);
+    }
+
+    public static void sortItems(BasketballItemCollection collection, Scanner scanner) {
+        // You can implement sorting options here
+    }
+
+    public static void searchItems(BasketballItemCollection collection, Scanner scanner) {
+        // You can implement search options here
+    }
+}
